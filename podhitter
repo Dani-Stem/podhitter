@@ -1,0 +1,62 @@
+#include <Servo.h>
+
+Servo up; 
+Servo micro; 
+Servo micro0; 
+
+#define echoPin 2 
+#define trigPin 3 
+
+int posup = 8;   
+int posmicro = 10;   
+int posmicro0 = 0;   
+
+long duration; 
+int distance;
+
+void setup() {
+  pinMode(trigPin, OUTPUT); 
+  pinMode(echoPin, INPUT); 
+  Serial.begin(9600); 
+  up.attach(6);  
+  micro.attach(5);
+  micro0.attach(9);
+
+}
+
+void loop() {
+
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = duration * 0.034 / 2; 
+
+
+
+
+  if (distance < 10){
+    
+    for (posup = 8; posup <= 180; posup += 1) { 
+      
+      up.write(posup);              
+      delay(10);                      
+    }
+      for (posmicro = 20; posmicro <= 70; posmicro += 1) { 
+      
+      micro.write(posmicro);              
+      delay(25);                      
+    }
+    delay(3000);
+    for (posmicro = 70; posmicro >= 20; posmicro -= 1) {
+      micro.write(posmicro);             
+      delay(25);                       
+    }
+    for (posup = 180; posup >= 8; posup -= 1) {
+      up.write(posup);             
+      delay(10);                       
+    }
+  }
+}
